@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.default.mobile.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.rtl.min.css" />
+    <link rel="stylesheet" href="/css/styles/examples-offline.css" />
+
+    <script src="/js/ui/jquery.min.js"></script>
+    <script src="/js/ui/kendo.all.min.js"></script>
+    <script src="/js/ui/jszip.min.js"></script>
+    <script src="/js/ui/console.js"></script>
+
+    <script th:inline="javascript">
+        var userIdx = [[${userIdx}]];
+        var boardNum = [[${boardOne.boardNum}]];
+        var boardTitle = [[${boardOne.boardTitle}]];
+        var boardContets = [[${boardOne.boardContents}]];
+        var boardRegidate = [[${boardOne.boardRegidate}]];
+        var boardModidate = [[${boardOne.boardModidate}]];
+        var dbUserIdx = [[${boardOne.member.userIdx}]];
+        var likeCnt = [[${likeCnt}]];
+    </script>
+</head>
+<body>
+<header style="width: 100%">
+    <div id="appbar" style="height: 15%; margin-bottom: 15px"></div>
+</header>
+<section>
+    <div class="demo-section wide" style="width: 80%; height: 800px;">
+        <input type="hidden" id="free-board-detail-board-num" name="boardNum">
+        <input type="hidden" id="free-board-detail-user-num" name="userIdx">
+        <div style="flex-flow: column; width: 100%">
+            <div class="pop-k-header k-card-header">
+                <div>
+                    <h3 id="free-board-detail-popup-title"></h3>
+                </div>
+            </div>
+            <div class="k-card-body">
+                <div class="k-card-header">
+                    <h4 id="free-board-detail-title"></h4>
+                </div>
+                <div id="free-board-detail-body-splitter" class="k-card-body">
+                    <div id="detail-body-top-section" style="height: 83%; border-bottom: 1px solid rgb(222,226,230);">
+                        <div id="free-board-detail-contents" style="height: 500px;"></div>
+                    </div>
+                    <div id="detail-body-bottom-section" style="height: 8%;">
+                        <div style="display: table; width: 80%; table-layout: fixed; border-spacing: 5px;">
+                            <div style="display: table-row">
+                                <div style="display: table-cell; padding: 5px;">
+                                    <dt>등록</dt>
+                                    <dd><input id="free-board-detail-reg-date"/></dd>
+                                </div>
+                                <div style="display: table-cell; padding: 5px;">
+                                    <dt>수정</dt>
+                                    <dd><input id="free-board-detail-modi-date"/></dd>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="k-card-footer" style="height:40px; display: flex; justify-content: space-between;">
+                <div style="padding: 5px">
+                    <button id="free-board-detail-update-btn">수정</button>
+                    <button id="free-board-detail-delete-btn">삭제</button>
+                </div>
+                <div style="padding: 5px;">
+                    <h3 id="likeCnt"  th:text="${likeCnt}"></h3>
+                    <button id="free-board-detail-like">추천</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+<script th:src="@{/js/board/boardDetail.js}"></script>
+</html>

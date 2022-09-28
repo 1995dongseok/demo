@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>editor</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/css/styles/kendo.common.min.css" />
+  <link rel="stylesheet" href="/css/styles/kendo.default.min.css" />
+  <link rel="stylesheet" href="/css/styles/kendo.default-main.min.css" />
+  <link rel="stylesheet" href="/css/styles/kendo.default.mobile.min.css" />
+  <link rel="stylesheet" href="/css/styles/kendo.rtl.min.css" />
+  <link rel="stylesheet" href="/css/styles/examples-offline.css" />
+
+  <script src="/js/ui/jquery.min.js"></script>
+  <script src="/js/ui/kendo.all.min.js"></script>
+  <script src="/js/ui/jszip.min.js"></script>
+  <script src="/js/ui/console.js"></script>
+
+</head>
+<body>
+<header style="width: 100%;">
+  <div id="appbar" style="height: 10%;"></div>
+</header>
+<section>
+  <div class="free-board-editor-validator" style="height: 100%; width: 100%;">
+      <div id="k-card-body" style="height: 100%;">
+        <div class="demo-section wide" style="width: 80%; height: 800px">
+            <div class="pop-k-header k-card-header" style="height: 3%;">
+                <h3 id="free-board-editor-popup-title"></h3>
+            </div>
+            <form id="saveboardform" action="/v1/boardAdd" method="post">
+                <div class="c-search-box c-flex-center pane-content" style="margin: 20px 20px;">
+                    <select id="free-board-search-drop-down-list" name="board_type" style="width: 8%;">
+                        <option>일반 게시글</option>
+                        <option>공지 게시글</option>
+                    </select>
+                    <label style="width:70px; text-align: center;margin-left: 20px">제목</label>
+                    <input id="free-board-editor-title" name="board_title" style="width: 85%; margin-left: 20px"/>
+                    <textarea id="editor" name="board_contents" rows="10" cols="30" style="width:100%; height:650px;" aria-label="editor"></textarea>
+                    <hr><button id="free-board-editor-btn-save" onclick="submit()">저장</button>
+                    <button id="free-board-editor-btn-cancle">취소</button>
+                </div>
+            </form>
+        </div>
+      </div>
+  </div>
+</section>
+
+</body>
+<script th:src="@{/js/board/editor.js}"></script>
+</html>

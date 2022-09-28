@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>homes</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.default.mobile.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.rtl.min.css" />
+    <link rel="stylesheet" href="/css/styles/examples-offline.css" />
+
+    <script src="/js/ui/jquery.min.js"></script>
+    <script src="/js/ui/kendo.all.min.js"></script>
+    <script src="/js/ui/jszip.min.js"></script>
+    <script src="/js/ui/console.js"></script>
+
+
+
+</head>
+<body>
+<header style="width: 100%">
+    <div id="appbar" style="height: 15%; margin-bottom: 15px"></div>
+</header>
+<section>
+    <div class="free-board-layout" style="height: 100%; width: 100%;">
+        <div id="free-board-body" style="height: 88%;">
+            <div id="tilelayout"></div>
+            <script id="free-board-rec-grid-template" type="text/x-kendo-template">
+                <div id="free-board-rec-grid" style="margin: 5px; width: 100%";></div>
+            </script>
+            <script id="free-board-grid-template" type="text/x-kendo-template">
+                <div id="free-board-grid" style="margin: 5px; width: 100%; height: 84%";></div>
+                <button id="free-board-editor-btn" style="width: 5%; margin: 10px;">글쓰기</button>
+                <div id="pager"></div>
+            </script>
+        </div>
+    </div>
+
+</section>
+
+</body>
+
+<script th:src="@{/js/board/board.js}"> </script>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>editor</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.default-main.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.default.mobile.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.rtl.min.css" />
+    <link rel="stylesheet" href="/css/styles/examples-offline.css" />
+
+    <script src="/js/ui/jquery.min.js"></script>
+    <script src="/js/ui/kendo.all.min.js"></script>
+    <script src="/js/ui/jszip.min.js"></script>
+    <script src="/js/ui/console.js"></script>
+
+</head>
+<body>
+<header style="width: 100%;">
+    <div id="appbar" style="height: 10%;"></div>
+</header>
+<section>
+    <div class="free-board-editor-validator" style="height: 100%; width: 100%;">
+        <div id="k-card-body" style="height: 100%;">
+            <div class="demo-section wide" style="width: 80%; height: 800px">
+                <div class="pop-k-header k-card-header" style="height: 3%;">
+                    <h3 id="free-board-editor-popup-title"></h3>
+                </div>
+                <form id="modiboardform" th:action="@{'/v1/boardModi/'+${boardOne.boardNum}}" method="post">
+                    <input type="hidden" id="free-board-detail-board-num" th:value="${boardOne.boardNum}">
+                    <div class="c-search-box c-flex-center pane-content" style="margin: 20px 20px;">
+                        <select id="free-board-search-drop-down-list" name="board_type" style="width: 8%;">
+                            <option>일반 게시글</option>
+                            <option>공지 게시글</option>
+                        </select>
+                        <label style="width:70px; text-align: center;margin-left: 20px">제목</label>
+                        <input id="free-board-editor-title" name="board_title" th:value="${boardOne.boardTitle}" style="width: 85%; margin-left: 20px"/>
+                        <div id="free-board-detail-body-splitter" class="k-card-body">
+                            <div id="detail-body-top-section" style="height: 83%; border-bottom: 1px solid rgb(222,226,230);">
+                                <textarea id="editor" name="board_contents" th:value="${boardOne.boardContents}" th:text="${boardOne.boardContents}"rows="10" cols="30" style="width:100%; height:500px;" aria-label="editor"></textarea>
+                            </div>
+                            <div id="detail-body-bottom-section" style="height: 8%;">
+                                <div style="display: table; width: 80%; table-layout: fixed; border-spacing: 5px;">
+                                    <div style="display: table-row">
+                                        <div style="display: table-cell; padding: 5px;">
+                                            <dt>등록</dt>
+                                            <dd><input id="free-board-detail-reg-date"/></dd>
+                                        </div>
+                                        <div style="display: table-cell; padding: 5px;">
+                                            <dt>수정</dt>
+                                            <dd><input id="free-board-detail-modi-date"/></dd>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <hr><button id="free-board-editor-btn-save" onclick="modify()">저장</button>
+                        <button id="free-board-editor-btn-cancle">취소</button>
+                    </div>
+                </form>
+                <script th:inline="javascript">
+                    function modify(){
+                        $("#modiboardform").submit();
+                    }
+                    const message = {
+                        callBackConfirm: function(obj){
+                            let opt = $.extend({title: document.title, msg: '처리하겠습니까?', callback: ''}, obj);
+                            let $div = $('<div id="callBackConfirm"></div>');
+                            $('body').append($div);
+                            $($div).kendoDialog({
+                                title: opt.title,
+                                content: opt.msg,
+                                minWidth: 300,
+                                minHeight: 150,
+                                closable: false,
+                                actions: [
+                                    {text: '취소'},
+                                    {
+                                        text: '확인',
+                                        action: function () {
+                                            if (typeof opt.callback === 'function') {
+                                                opt.callback.call();
+                                            }
+                                            return true;
+                                        },
+                                        primary: true
+                                    }
+                                ],
+                                close: function () {
+                                    $($div).data('kendoDialog').destroy();
+                                }
+
+                            });
+                        }
+                    }
+                    $('#free-board-editor-popup-title').text('게시글 수정');
+                    $("#free-board-search-drop-down-list").kendoDropDownList();
+                    $('#free-board-editor-title').kendoTextBox();
+                    $('#editor').kendoTextBox();
+                    $("#free-board-detail-reg-date").kendoTextBox({
+                        fillMode: 'flat',
+                        readonly: true
+                    });
+                    $("#free-board-detail-modi-date").kendoTextBox({
+                        fillMode: 'flat',
+                        readonly: true
+                    });
+                    boardRegidate = kendo.toString(new Date([[${boardOne.boardRegidate}]]), "yyyy-MM-dd H:mm");
+                    boardModidate = kendo.toString(new Date([[${boardOne.boardModidate}]]), "yyyy-MM-dd H:mm");
+                    $("#free-board-detail-reg-date").data("kendoTextBox").value(boardRegidate);
+                    $("#free-board-detail-modi-date").data("kendoTextBox").value(boardModidate);
+
+                    $('#free-board-editor-btn-save').kendoButton({
+                        themeColor: 'info'
+                    });
+
+                    $('#free-board-editor-btn-cancle').kendoButton({
+                        themeColor: 'base',
+                        click: function () {
+                            window.location.href = "/board";
+                        }
+                    });
+
+                    var appbar = $("#appbar").kendoAppBar({
+                        themeColor: "inherit",
+                        items: [
+                            { template: '<a id="logo" href="/board"> <img src="/images/centerlink.png" alt="logo" style="width: 100%"> </a>', type: "contentItem" },
+
+                            { width: 1, type: "spacer"},
+                            {
+                                template: '<button id="home-top-btn"></button>', type: "contentItem"
+                            },
+                            {width: 16, type: "spacer"}
+                        ]
+                    });
+
+                    $("#home-top-btn").kendoFloatingActionButton({
+                        icon: "plus",
+                        align: 'top end',
+                        positionMode: "absolute",
+                        themeColor: "info",
+                        size: "medium",
+                        alignOffset: {
+                            x: 10,
+                            y: 10
+                        },
+                        items: [
+                            {
+                                label: '로그아웃',
+                                icon: "logout",
+                                click: function () {
+                                    message.callBackConfirm({msg: '로그아웃 하시겠습니까?', callback: ''})
+                                }
+                            },
+                            {
+                                label: '마이페이지',
+                                icon: 'user'
+                            }]
+                    });
+
+                </script>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+
+</html>

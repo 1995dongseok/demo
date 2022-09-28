@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" href="/css/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="/css/styles/kendo.default.mobile.min.css" />
+    <script src="/js/ui/jquery.min.js"></script>
+    <script src="/js/ui/kendo.all.min.js"></script>
+</head>
+
+<body>
+<div id="example">
+    <div class="demo-section">
+        <div id="validation-success"></div>
+
+        <form id="loginForm" action="/userLogin" method="post">
+
+
+            <button id="free-board-join-btn">join</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var validationSuccess = $("#validation-success");
+
+            $("#loginForm").kendoForm({
+                orientation: "vertical",
+                formData: {
+
+                    email: "",
+                    password: ""
+                },
+                items: [{
+                    type: "group",
+                    label: "로그인",
+                    items: [
+
+                        { field: "email", label: "이메일:", validation: { required: true, email: true } },
+                        {
+                            field: "password",
+                            label: "패스워드:",
+                            validation: { required: true },
+                            editor: function (container, options) {
+                                $('<input type="password" id="Password" name="' + options.field + '" title="Password" required="required" autocomplete="off" aria-labelledby="Password-form-label" data-bind="value: Password" aria-describedby="Password-form-hint"/>')
+                                    .appendTo(container)
+                                    .kendoTextBox();
+                            }
+                        }
+
+                    ]
+                }],
+                validateField: function(e) {
+                    validationSuccess.html("");
+                },
+                submit: function(e) {
+
+                    e.preventDefault();
+                    validationSuccess.html("<div class='k-messagebox k-messagebox-success'>Form data is valid!</div>");
+                    $("#loginForm").submit();
+                },
+
+                clear: function(ev) {
+                    validationSuccess.html("");
+                }
+            });
+
+
+
+        });
+
+        $('#free-board-join-btn').kendoButton({
+            themeColor: 'info',
+            click : () => {
+                window.location="/join"
+            }
+        });
+    </script>
+</div>
+
+
+
+</body>
+</html>
