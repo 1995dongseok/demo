@@ -13,6 +13,7 @@ $("#tilelayout").kendoTileLayout({
             text: "게시판"
         },
         bodyTemplate: kendo.template($("#free-board-grid-template").html())
+
     }],
     columns: 5,
     columnsWidth: 360,
@@ -90,7 +91,7 @@ $("#home-top-btn").kendoFloatingActionButton({
 $("#free-board-range-drop-down-list").kendoDropDownList({
     fillMode: "flat",
 });
-$("#free-board-search-drop-down-list").kendoDropDownList();
+$("#free-board-search-drop-down-list").kendoDropDownList({});
 $("#free-board-search-text-box").kendoTextBox();
 const boardDataSource = {
     boardSelectPageDataSource: () => {
@@ -132,7 +133,7 @@ const boardDataSource = {
             },
             serverPaging: true,
             pageSize: 12
-        })
+        },)
     },
 
 }
@@ -174,6 +175,10 @@ $("#free-board-grid").kendoGrid({
             attributes: {style: 'text-align:center'},
         }
     ],
+    toolbar: ["search"],
+    search: {
+        fields: ["userName","boardTitle"]
+    },
     dataSource: boardDataSource.boardSelectPageDataSource(),
     change: (e) => {
         const cell = e.sender.select();
