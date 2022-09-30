@@ -4,6 +4,7 @@ import com.example.demo.board.entity.BoardEntity;
 import com.example.demo.board.entity.LikeEntity;
 import com.example.demo.board.service.BoardService;
 import com.example.demo.board.service.request.BoardInsertCommand;
+import com.example.demo.board.service.response.BoardDomain;
 import com.example.demo.config.auth.PrincipalDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,7 @@ public class BoardRestController {
     }
 
     @GetMapping("/boardList")
-    public String boardList(Pageable pageable){
+    public BoardDomain boardList(Pageable pageable){
         return boardService.findAll(pageable);
     }
 

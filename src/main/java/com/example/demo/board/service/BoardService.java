@@ -2,16 +2,18 @@ package com.example.demo.board.service;
 
 import com.example.demo.board.entity.*;
 import com.example.demo.board.service.request.BoardInsertCommand;
+import com.example.demo.board.service.response.BoardDomain;
 import com.example.demo.member.entity.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,11 +34,13 @@ public class BoardService {
     public void boardInsert(BoardInsertCommand command) {
         boardinsertRepository.save(command);
     }
-
-    public String findAll(Pageable pageable){
-        PageRequest pr = PageRequest.of(5, 12, Sort.by(Sort.Direction.DESC, "boardNum"));
-        List<BoardEntity> be = boardRepository.findAll(pageable).getContent();
-        return "boardList";
+//model view controller = mvc 구조
+    public BoardDomain findAll(Pageable pageable){
+        Page<BoardEntity> pageData = boardRepository.findAll(pageable);
+        BoardDomain boardDomain = new BoardDomain();
+        boardDomain.setBoardEntity(pageData.getContent());
+        boardDomain.setTotalCount((int) pageData.getTotalElements());
+        return boardDomain;
     }
 
     public BoardEntity findOne(int boardNum){
@@ -77,5 +81,7 @@ public class BoardService {
     }
 
     public int likeCnt(int boardNum) { return likeRepository.countByBoardIdx(boardNum); }
+
+
 
 }

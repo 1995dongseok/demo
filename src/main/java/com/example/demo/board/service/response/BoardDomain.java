@@ -8,6 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
+
 public class BoardDomain {
     private List<BoardEntity> boardEntity;
     private int totalCount;

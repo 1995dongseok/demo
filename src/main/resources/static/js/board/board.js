@@ -105,11 +105,14 @@ const boardDataSource = {
                 parameterMap : (data)=>{
                     return {
                         page : parseInt(data.page) -1,
-                        size : data.pageSize
+                        size : data.pageSize,
+                        sort : "boardRegidate,desc"
                     }
                 }
             },
             schema: {
+                data: "boardEntity",
+                total: "totalCount",
                 model: {
                     boardNum: {type: "number"},
                     boardTitle: {type: "string"},
@@ -119,17 +122,19 @@ const boardDataSource = {
                     userName: {type: "string"}
                 },
                 parse: (res) => {
-                    res.forEach((row) => {
+                    res.boardEntity.forEach((row) => {
                         row.boardRegidate = kendo.toString(new Date(row.boardRegidate), "yyyy-MM-dd HH:mm");
                         row.userName = row.member.userName;
                     })
-                    console.log(res);
+                    console.log(res.boardEntity);
                     return res;
                 }
             },
-            pageSize: 2
+            serverPaging: true,
+            pageSize: 12
         })
-    }
+    },
+
 }
 $("#free-board-grid").kendoGrid({
     columns: [
@@ -177,9 +182,7 @@ $("#free-board-grid").kendoGrid({
     },
     resizable: false,
     selectable: true,
-    pageable: {
-        refresh: true
-    }
+    pageable: true
 });
 
 $("#free-board-rec-grid").kendoGrid({
@@ -203,7 +206,6 @@ $('#free-board-editor-btn').kendoButton({
 
 class user {
     logout() {
-
         window.location.href = '/logout';
     }
 }

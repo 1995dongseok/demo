@@ -15,7 +15,7 @@ import javax.persistence.*;
 @DynamicInsert
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member  {
+public class Member {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
